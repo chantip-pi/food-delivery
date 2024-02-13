@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:food_delivery/models/cart_model.dart';
 import 'package:food_delivery/models/food_model.dart';
 
+import 'package:provider/provider.dart';
 
 class FoodItem extends StatefulWidget {
   final Food food;
@@ -28,9 +30,13 @@ class _FoodItemState extends State<FoodItem> {
     });
   }
 
-   
   @override
   Widget build(BuildContext context) {
+    var isInCart = context.select<CartModel, bool>(
+      // Here, we are only interested whether [item] is inside the cart.
+      (cart) => cart.items.contains(widget.food),
+    );
+
     return Scaffold(
         body: Center(
             child: Column(
@@ -132,7 +138,17 @@ class _FoodItemState extends State<FoodItem> {
                     child: const Icon(Icons.add, color: Colors.black)),
                 Expanded(
                     child: ElevatedButton(
-                  onPressed: null,
+                  onPressed: isInCart
+                      ? null
+                      : () {
+                          // If the item is not in cart, we let the user add it.
+                          // We are using context.read() here because the callback
+                          // is executed whenever the user taps the button. In other
+                          // words, it is executed outside the build method.
+                          var cart = context.read<CartModel>();
+                          cart.add(widget.food);
+                          Navigator.pop(context);
+                        },
                   style: ElevatedButton.styleFrom(
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(16))),
@@ -145,3 +161,5 @@ class _FoodItemState extends State<FoodItem> {
     )));
   }
 }
+
+
