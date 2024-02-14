@@ -24,7 +24,7 @@ class MyCart extends StatelessWidget {
                 fontWeight: FontWeight.bold,)),
             ),
             Padding(
-              padding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+              padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
               child: Card(
                   color: Colors.white,
                   child: InkWell(
@@ -81,21 +81,21 @@ class _CartList extends StatelessWidget {
       itemCount: cart.cartLength,
       itemBuilder: (context, index) => ListTile(
         leading: Container(
-          decoration: BoxDecoration(color:Colors.white,shape: BoxShape.rectangle),
+          decoration: const BoxDecoration(color:Colors.white,shape: BoxShape.rectangle),
           child: Padding(
             padding: const EdgeInsets.all(8.0),
             child: Text('${cart.shoppingCart[index].quantity}'
-            ,style: TextStyle(fontWeight: FontWeight.bold,fontSize: 12)),
+            ,style: const TextStyle(fontWeight: FontWeight.bold,fontSize: 12)),
           ),
         ),
         trailing: IconButton(
           icon: const Icon(Icons.remove_circle_outline),
           onPressed: () {
-            cart.removeItem(cart.shoppingCart[index].product.id!);
+            cart.removeItem(cart.shoppingCart[index].product.id);
           },
         ),
         title: Text(
-          cart.shoppingCart[index].product.name ?? "Unknown Item",
+          cart.shoppingCart[index].product.name,
           style: itemNameStyle,
         ),
       ),
@@ -140,7 +140,7 @@ class _CartTotal extends StatelessWidget {
                             children: [
                               const Text('Order Now',style: TextStyle(color: Colors.white)),
                               Text('\$${cart.getCartTotal().toStringAsFixed(2)}',
-                              style: TextStyle(color: Colors.white),),
+                              style: const TextStyle(color: Colors.white),),
                             ],
                           ),
                         )

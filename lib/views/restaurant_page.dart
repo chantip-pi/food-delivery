@@ -11,7 +11,6 @@ class Restaurant extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return buildBody(context);
-    
   }
 
   Widget buildBody(BuildContext context) {
@@ -120,29 +119,27 @@ class Restaurant extends StatelessWidget {
   }
 }
 
-
 class BuildFoodList extends StatelessWidget {
   BuildFoodList({super.key});
-  final List<Food> _foodList = FoodController().getFoodList();  
+  final List<Food> _foodList = FoodController().getFoodList();
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-      child:GridView.builder(
-        shrinkWrap: true,
-        primary: false,
-        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 2,
-          crossAxisSpacing: 10,
-          mainAxisSpacing: 10,
-        ),
-        itemCount: _foodList.length,
-        itemBuilder: (context, index) {
-          return BuildProductBox(food: _foodList[index]);
-        },
-      ));
-    
+        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+        child: GridView.builder(
+          shrinkWrap: true,
+          primary: false,
+          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 2,
+            crossAxisSpacing: 10,
+            mainAxisSpacing: 10,
+          ),
+          itemCount: _foodList.length,
+          itemBuilder: (context, index) {
+            return BuildProductBox(food: _foodList[index]);
+          },
+        ));
   }
 }
 
@@ -158,10 +155,12 @@ class BuildProductBox extends StatefulWidget {
 class _BuildProductBoxState extends State<BuildProductBox> {
   @override
   Widget build(BuildContext context) {
-var isInCart = context.select<CartProvider, bool>(
-  (cart) => cart.shoppingCart
-      .any((element) => element.product.id == widget.food.id),
-);
+    
+    var isInCart = context.select<CartProvider, bool>(
+      (cart) => cart.shoppingCart
+          .any((element) => element.product.id == widget.food.id),
+    );
+
     return GestureDetector(
       onTap: () {
         Navigator.push(
@@ -178,7 +177,7 @@ var isInCart = context.select<CartProvider, bool>(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
-           Flexible(
+            Flexible(
               flex: 2,
               child: Stack(
                 children: [
@@ -191,16 +190,17 @@ var isInCart = context.select<CartProvider, bool>(
                       fit: BoxFit.fill,
                     ),
                   ),
-                  Positioned(
-                    top: 10.0, // Adjust the top position as needed
-                    right: 10.0, // Adjust the right position as needed
-                    child: InCartCircle(
-                        isInCart: isInCart,), // Replace with your isInCart condition
-                  ),
+                  
+                 Positioned(
+                        top: 10.0,
+                        right: 10.0,
+                        child: InCartCircle(
+                          isInCart: isInCart,
+                        ),
+                      )
                 ],
               ),
             ),
-
             Flexible(
               flex: 1,
               child: Column(
@@ -245,7 +245,6 @@ var isInCart = context.select<CartProvider, bool>(
   }
 }
 
-
 class InCartCircle extends StatelessWidget {
   final bool isInCart;
 
@@ -255,15 +254,15 @@ class InCartCircle extends StatelessWidget {
   Widget build(BuildContext context) {
     return isInCart
         ? Container(
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
               shape: BoxShape.rectangle,
               color: Colors.white, // Customize the color as needed
             ),
-            child: Padding(
+            child: const Padding(
               padding: EdgeInsets.all(8.0),
               child: Icon(Icons.check, color: Colors.deepOrange)),
+          
           )
-        : SizedBox.shrink(); // Return an empty SizedBox if not in cart
+        : const SizedBox.shrink(); // Return an empty SizedBox if not in cart
   }
 }
-

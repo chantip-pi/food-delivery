@@ -7,6 +7,7 @@ import 'package:food_delivery/models/food_model.dart';
 class CartProvider extends ChangeNotifier {
   final List<CartModel> _shoppingCart = [];
 
+
   void addToCart(Food product,quantity) {
     var isExist = _shoppingCart.where((element) => element.product.id == product.id);
     if (isExist.isEmpty) {
@@ -54,8 +55,13 @@ class CartProvider extends ChangeNotifier {
   }
 
   List<CartModel> get shoppingCart => _shoppingCart;
-  double get cartSubTotal => getCartTotal();
-  double get shippingCharge => 120;
-  double get cartTotal => cartSubTotal + shippingCharge;
   int get cartLength => _shoppingCart.length;
+
+  CartModel getItemById(int id) {
+     var item = _shoppingCart.firstWhere(
+    (element) => element.product.id == id,
+  );
+  return item;
+}
+
 }
