@@ -51,7 +51,7 @@ class MyCart extends StatelessWidget {
               ),
             Expanded(
               child: Padding(
-                padding: const EdgeInsets.all(32),
+                padding: const EdgeInsets.all(10),
                 child: _CartList(),
               ),
             ),
@@ -99,11 +99,8 @@ class _CartList extends StatelessWidget {
 class _CartTotal extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    var hugeStyle =
-        Theme.of(context).textTheme.displayLarge!.copyWith(fontSize: 32);
-
     return SizedBox(
-      height: 200,
+      height: 100,
       child: Center(
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -115,18 +112,35 @@ class _CartTotal extends StatelessWidget {
             // The important thing is that it will not rebuild
             // the rest of the widgets in this build method.
             Consumer<CartModel>(
-                builder: (context, cart, child) => Text(
-                    '\$${cart.totalPrice.toStringAsFixed(2)}',
-                    style: hugeStyle)),
-            const SizedBox(width: 24),
-            FilledButton(
-              onPressed: () {
-                ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('Buying not supported yet.')));
-              },
-              style: TextButton.styleFrom(foregroundColor: Colors.white),
-              child: const Text('BUY'),
-            ),
+                builder: (context, cart, child) => 
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 10),
+                    child: ElevatedButton(
+                      onPressed: () {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(content: Text('Ordering not supported yet.')));
+                                  },
+                                   style: ElevatedButton.styleFrom(
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(16),),
+                          backgroundColor: Colors.deepOrange,),
+                      child:
+                        Padding(
+                          padding: const EdgeInsets.all(10.0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              const Text('Order Now',style: TextStyle(color: Colors.white)),
+                              Text('\$${cart.totalPrice.toStringAsFixed(2)}',
+                              style: TextStyle(color: Colors.white),),
+                            ],
+                          ),
+                        )
+                       ),
+                  ),
+                )),
+          
           ],
         ),
       ),

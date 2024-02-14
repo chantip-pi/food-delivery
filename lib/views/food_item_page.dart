@@ -119,6 +119,7 @@ class _FoodItemState extends State<FoodItem> {
                 ElevatedButton(
                     style: ElevatedButton.styleFrom(
                       shape: const CircleBorder(),
+                      backgroundColor: Colors.white,
                     ),
                     onPressed: decrement,
                     child: const Icon(Icons.remove, color: Colors.black)),
@@ -133,6 +134,7 @@ class _FoodItemState extends State<FoodItem> {
                 ElevatedButton(
                     style: ElevatedButton.styleFrom(
                       shape: const CircleBorder(),
+                      backgroundColor: Colors.white,
                     ),
                     onPressed: increment,
                     child: const Icon(Icons.add, color: Colors.black)),

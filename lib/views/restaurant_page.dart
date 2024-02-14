@@ -258,7 +258,7 @@ class InCartCircle extends StatelessWidget {
             height: 40.0,
             decoration: BoxDecoration(
               shape: BoxShape.circle,
-              color: Colors.orange, // Customize the color as needed
+              color: Colors.deepOrange, // Customize the color as needed
             ),
             child: Center(child: Icon(Icons.check, color: Colors.white)),
           )
