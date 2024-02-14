@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:food_delivery/views/cart_page.dart';
 import 'package:food_delivery/views/home_page.dart';
 import 'package:food_delivery/views/restaurant_page.dart';
 
@@ -17,7 +18,12 @@ class _BottomNavState extends State<BottomNav> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: buildAppBar(),
-      floatingActionButton: buildFloatingActionButton(),
+      floatingActionButton: FloatingActionButton(onPressed: (){
+        Navigator.push(context, MaterialPageRoute(builder: (context) => MyCart()));
+      },
+       backgroundColor: Colors.orange,
+        child: const Icon(Icons.shopping_cart_outlined, color: Colors.white),
+      ),
       bottomNavigationBar: BottomNavigationBar(
         selectedItemColor: Colors.orange,
         items: const [
@@ -52,12 +58,4 @@ class _BottomNavState extends State<BottomNav> {
       ),
     );
   }
-
-  FloatingActionButton buildFloatingActionButton() {
-    return FloatingActionButton(
-      onPressed: () {},
-      backgroundColor: Colors.orange,
-      child: const Icon(Icons.shopping_cart_outlined, color: Colors.white),
-    );
-  }
-}
+} 

@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:food_delivery/controllers/food_controllers.dart';
 import 'package:food_delivery/views/food_item_page.dart';
 import 'package:food_delivery/models/food_model.dart';
+import 'package:food_delivery/providers/cart_provider.dart';
+import 'package:provider/provider.dart';
 
 class Restaurant extends StatelessWidget {
   const Restaurant({Key? key}) : super(key: key);
@@ -9,7 +11,6 @@ class Restaurant extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return buildBody(context);
-    
   }
 
   Widget buildBody(BuildContext context) {
@@ -118,29 +119,27 @@ class Restaurant extends StatelessWidget {
   }
 }
 
-
 class BuildFoodList extends StatelessWidget {
   BuildFoodList({super.key});
-  final List<Food> _foodList = FoodController().getFoodList();  
+  final List<Food> _foodList = FoodController().getFoodList();
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-      child:GridView.builder(
-        shrinkWrap: true,
-        primary: false,
-        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 2,
-          crossAxisSpacing: 10,
-          mainAxisSpacing: 10,
-        ),
-        itemCount: _foodList.length,
-        itemBuilder: (context, index) {
-          return BuildProductBox(food: _foodList[index]);
-        },
-      ));
-    
+        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+        child: GridView.builder(
+          shrinkWrap: true,
+          primary: false,
+          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 2,
+            crossAxisSpacing: 10,
+            mainAxisSpacing: 10,
+          ),
+          itemCount: _foodList.length,
+          itemBuilder: (context, index) {
+            return BuildProductBox(food: _foodList[index]);
+          },
+        ));
   }
 }
 
@@ -156,6 +155,12 @@ class BuildProductBox extends StatefulWidget {
 class _BuildProductBoxState extends State<BuildProductBox> {
   @override
   Widget build(BuildContext context) {
+    
+    var isInCart = context.select<CartProvider, bool>(
+      (cart) => cart.shoppingCart
+          .any((element) => element.product.id == widget.food.id),
+    );
+
     return GestureDetector(
       onTap: () {
         Navigator.push(
@@ -174,14 +179,26 @@ class _BuildProductBoxState extends State<BuildProductBox> {
           children: <Widget>[
             Flexible(
               flex: 2,
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(15.0),
-                child: Image.asset(
-                  "assets/images/${widget.food.image}",
-                  height: double.infinity,
-                  width: double.infinity,
-                  fit: BoxFit.fill,
-                ),
+              child: Stack(
+                children: [
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(15.0),
+                    child: Image.asset(
+                      "assets/images/${widget.food.image}",
+                      height: double.infinity,
+                      width: double.infinity,
+                      fit: BoxFit.fill,
+                    ),
+                  ),
+                  
+                 Positioned(
+                        top: 10.0,
+                        right: 10.0,
+                        child: InCartCircle(
+                          isInCart: isInCart,
+                        ),
+                      )
+                ],
               ),
             ),
             Flexible(
@@ -225,5 +242,27 @@ class _BuildProductBoxState extends State<BuildProductBox> {
         ),
       ),
     );
+  }
+}
+
+class InCartCircle extends StatelessWidget {
+  final bool isInCart;
+
+  InCartCircle({required this.isInCart});
+
+  @override
+  Widget build(BuildContext context) {
+    return isInCart
+        ? Container(
+            decoration: const BoxDecoration(
+              shape: BoxShape.rectangle,
+              color: Colors.white, // Customize the color as needed
+            ),
+            child: const Padding(
+              padding: EdgeInsets.all(8.0),
+              child: Icon(Icons.check, color: Colors.deepOrange)),
+          
+          )
+        : const SizedBox.shrink(); // Return an empty SizedBox if not in cart
   }
 }

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:food_delivery/providers/cart_provider.dart';
 import 'package:food_delivery/models/food_model.dart';
 
+import 'package:provider/provider.dart';
 
 class FoodItem extends StatefulWidget {
   final Food food;
@@ -28,7 +30,6 @@ class _FoodItemState extends State<FoodItem> {
     });
   }
 
-   
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -113,6 +114,7 @@ class _FoodItemState extends State<FoodItem> {
                 ElevatedButton(
                     style: ElevatedButton.styleFrom(
                       shape: const CircleBorder(),
+                      backgroundColor: Colors.white,
                     ),
                     onPressed: decrement,
                     child: const Icon(Icons.remove, color: Colors.black)),
@@ -122,22 +124,30 @@ class _FoodItemState extends State<FoodItem> {
                       width: 30,
                       child: Center(
                           child: Text(count.toString(),
-                              style: const TextStyle(fontSize: 24))),
+                              style: const TextStyle(fontSize: 20))),
                     )),
                 ElevatedButton(
                     style: ElevatedButton.styleFrom(
                       shape: const CircleBorder(),
+                      backgroundColor: Colors.white,
                     ),
                     onPressed: increment,
                     child: const Icon(Icons.add, color: Colors.black)),
                 Expanded(
                     child: ElevatedButton(
-                  onPressed: null,
+                  onPressed: () {
+                          var cart = context.read<CartProvider>();
+                          cart.addToCart(widget.food,count);
+                          Navigator.pop(context);
+                        },
                   style: ElevatedButton.styleFrom(
                       shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(16))),
+                          borderRadius: BorderRadius.circular(16),),
+                          backgroundColor: Colors.deepOrange,
+                          padding:EdgeInsets.all(10)),
                   child: Text(
-                      "Add to order \$ ${(count * widget.food.price).toStringAsFixed(2)}"),
+                      "Add to order \$ ${(count * widget.food.price).toStringAsFixed(2)}",
+                      style: TextStyle(color: Colors.white)),
                 ))
               ],
             ))
@@ -145,3 +155,5 @@ class _FoodItemState extends State<FoodItem> {
     )));
   }
 }
+
+
