@@ -128,7 +128,7 @@ class _FoodItemState extends State<FoodItem> {
                       width: 30,
                       child: Center(
                           child: Text(count.toString(),
-                              style: const TextStyle(fontSize: 24))),
+                              style: const TextStyle(fontSize: 20))),
                     )),
                 ElevatedButton(
                     style: ElevatedButton.styleFrom(
@@ -151,9 +151,12 @@ class _FoodItemState extends State<FoodItem> {
                         },
                   style: ElevatedButton.styleFrom(
                       shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(16))),
+                          borderRadius: BorderRadius.circular(16),),
+                          backgroundColor: Colors.deepOrange,
+                          padding:EdgeInsets.all(10)),
                   child: Text(
-                      "Add to order \$ ${(count * widget.food.price).toStringAsFixed(2)}"),
+                      "Add to order \$ ${(count * widget.food.price).toStringAsFixed(2)}",
+                      style: TextStyle(color: Colors.white)),
                 ))
               ],
             ))
