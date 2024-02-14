@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:food_delivery/controllers/food_controllers.dart';
 import 'package:food_delivery/views/food_item_page.dart';
 import 'package:food_delivery/models/food_model.dart';
-import 'package:food_delivery/models/cart_model.dart';
+import 'package:food_delivery/providers/cart_provider.dart';
 import 'package:provider/provider.dart';
 
 class Restaurant extends StatelessWidget {
@@ -158,10 +158,10 @@ class BuildProductBox extends StatefulWidget {
 class _BuildProductBoxState extends State<BuildProductBox> {
   @override
   Widget build(BuildContext context) {
-      var isInCart = context.select<CartModel, bool>(
-      // Here, we are only interested whether [item] is inside the cart.
-      (cart) => cart.items.contains(widget.food),
-    );
+var isInCart = context.select<CartProvider, bool>(
+  (cart) => cart.shoppingCart
+      .any((element) => element.product.id == widget.food.id),
+);
     return GestureDetector(
       onTap: () {
         Navigator.push(
@@ -195,7 +195,7 @@ class _BuildProductBoxState extends State<BuildProductBox> {
                     top: 10.0, // Adjust the top position as needed
                     right: 10.0, // Adjust the right position as needed
                     child: InCartCircle(
-                        isInCart: isInCart), // Replace with your isInCart condition
+                        isInCart: isInCart,), // Replace with your isInCart condition
                   ),
                 ],
               ),
@@ -245,6 +245,7 @@ class _BuildProductBoxState extends State<BuildProductBox> {
   }
 }
 
+
 class InCartCircle extends StatelessWidget {
   final bool isInCart;
 
@@ -254,14 +255,15 @@ class InCartCircle extends StatelessWidget {
   Widget build(BuildContext context) {
     return isInCart
         ? Container(
-            width: 40.0,
-            height: 40.0,
             decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              color: Colors.deepOrange, // Customize the color as needed
+              shape: BoxShape.rectangle,
+              color: Colors.white, // Customize the color as needed
             ),
-            child: Center(child: Icon(Icons.check, color: Colors.white)),
+            child: Padding(
+              padding: EdgeInsets.all(8.0),
+              child: Icon(Icons.check, color: Colors.deepOrange)),
           )
         : SizedBox.shrink(); // Return an empty SizedBox if not in cart
   }
 }
+
